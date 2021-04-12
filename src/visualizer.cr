@@ -29,7 +29,7 @@ class Visualizer
 
       draw(window)
 
-      @simulator.step 0.00005
+      @simulator.step 0.002
 
       window.display
     end
