@@ -7,6 +7,8 @@
 \DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
 \newcommand{\lgr}{\mathcal{L}}
 \newcommand{\dif}{\mathrm{d}}
+\newcommand{\deriv}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
 
 
 \title{Superlinear Angular Momentum in Reaction Wheels}
@@ -88,24 +90,24 @@ We begin by finding the coordinates and velocities of the involved objects:
 	\dot{\theta_n} &= \dot{\theta_0} \equiv \omega \\
 	x_i &= r_n \cos(\theta_n)\\
 	y_i &= r_n \sin(\theta_n)\\
-	\dot{x_n} &= \dot{r_n} \cos(\theta_n) - r_n \sin(\theta_n)\omega\\
-	\dot{y_n} &= \dot{r_n} \sin(\theta_n) + r_n \cos(\theta_n)\omega
+	\dot{x_n} &= \dot{r_n} \cos(\theta_n) - r_n \sin(\theta_n)\dot{\theta_0}\\
+	\dot{y_n} &= \dot{r_n} \sin(\theta_n) + r_n \cos(\theta_n)\dot{\theta_0}
 \end{align}
 
 Now, we can model the kinetic energy of the system.
 
 \begin{align}
-	T &= \sum_{n=0}^N \frac{1}{2} m (\dot{x_n}^2 + \dot{y_n}^2)\\
-	  &= \frac{mN}{2} \sum_{n=0}^N
-		(\dot{r_n} \cos(\theta_n) - r_n \sin(\theta_n)\omega)^2
-		+ (\dot{r_n} \sin(\theta_n) + r_n \cos(\theta_n)\omega)^2\\
-	  &= \frac{mN}{2} \sum_{n=0}^N \left(\dot{r_n}^2 + r_n^2 \omega^2\right)
+	T &= \sum_{n=0}^{N-1} \frac{1}{2} m (\dot{x_n}^2 + \dot{y_n}^2)\\
+	  &= \frac{m}{2} \sum_{n=0}^{N-1}
+		(\dot{r_n} \cos(\theta_n) - r_n \sin(\theta_n)\dot{\theta_0})^2
+		+ (\dot{r_n} \sin(\theta_n) + r_n \cos(\theta_n)\dot{\theta_0})^2\\
+	  &= \frac{m}{2} \sum_{n=0}^{N-1} \left(\dot{r_n}^2 + r_n^2 \dot{\theta_0}^2\right)
 \end{align}
 
 Next, we find the potential energy:
 
 \begin{align}
-	U &= \sum_{n=0}^N \left(\frac{1}{2}k(\ell_0-r_n)^2 + m g r_n
+	U &= \sum_{n=0}^{N-1} \left(\frac{1}{2}k(\ell_0-r_n)^2 + m g r_n
 		\sin(\theta_n)\right)
 \end{align}
 
@@ -113,9 +115,60 @@ Finally, we can combine these to yield the lagrangian for this system.
 
 \begin{align}
 	\mathcal{L} &= T - U\\
-		&= \sum_{n=0}^N \frac{m}{2}\left(\dot{r_n}^2 + r_n^2
-			\omega^2\right) - \frac{1}{2}k(\ell_0-r_n)^2 - m g r_n \sin(\theta_n)
+		&= \sum_{n=0}^{N-1} \frac{m}{2}\left(\dot{r_n}^2 + r_n^2
+			\dot{\theta_0}^2\right) - \frac{1}{2}k(\ell_0-r_n)^2 - m g r_n \sin(\theta_n)
 \end{align}
 
+Now, we can find the Euler-Lagrange equations. This system has $s=N+1$ degrees of
+freedom. $N$ of these are given by the parameters $r_0, r_1, \dots, r_{N-1}$,
+and the final parameter is $\theta_0$.
+
+Although we do technically have $N+1$ Euler-Lagrange equations, $N$ of them will
+be indistinguishable due to symmetry. We'll begin with the equation for the
+angle:
+
+\begin{align}
+	\deriv{}{t} \left(\pderiv{\lgr}{\dot{\theta_0}}\right)
+	&= \deriv{}{t} \sum_{n=0}^{N-1} m\dot{\theta_0} r_n^2\\
+	&= m \sum_{n=0}^{N-1} \ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n} \\
+	&= \pderiv{\lgr}{\theta_0}
+	= -mg\sum_{n=0}^{N-1}r_n\cos(\theta_n)\dot{\theta_0}\\
+\end{align}
+
+Dividing out the common $m$ term, we see that the equation simplifies to the
+following.
+
+\begin{align}
+	\sum_{n=0}^{N-1} \ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}
+	&= -g\sum_{n=0}^{N-1}r_n\cos(\theta_n)\dot{\theta_0}
+\end{align}
+
+We'll now compute the Euler-Lagrange equations for the remaining $N$ parameters
+- however, as mentioned, the symmetry of the problem means this is really just
+a single computation.
+
+\begin{align}
+	\deriv{}{t} \left(\pderiv{\lgr}{\dot{r_n}}\right)
+	&= \deriv{}{t} \left( m \dot{r_n} \right)
+	= m \ddot{r_n}\\
+	&= \pderiv{\lgr}{r_n}
+	= \left( m\dot{\theta_0}^2r_n
+		+ kr_n - mg\sin(\theta_n)
+	\right)
+\end{align}
+
+Motivated by the math of a simple spring oscillation, we'll introduce the
+fundamental frequency, $\omega_0 = \sqrt{\frac{k}{m}}$, into this calculation by
+dividing mass through.
+
+\begin{align}
+	\sum_{n=0}^{N-1} \ddot{r_n}
+	&= \sum_{n=0}^{N-1} \left( \dot{\theta_0}^2r_n
+		+ \frac{k}{m}r_n - g\sin(\theta_n)
+	\right)
+	&= \sum_{n=0}^{N-1} \left( \dot{\theta_0}^2r_n
+		+ \omega_0^2r_n - g\sin(\theta_n)
+	\right)
+\end{align}
 
 \end{document}
