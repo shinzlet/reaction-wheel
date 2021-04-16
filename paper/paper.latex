@@ -1,0 +1,121 @@
+\documentclass[12pt]{article}
+
+\usepackage{mathtools}
+\usepackage{calrsfs}
+\usepackage{graphicx}
+
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+\newcommand{\lgr}{\mathcal{L}}
+\newcommand{\dif}{\mathrm{d}}
+
+
+\title{Superlinear Angular Momentum in Reaction Wheels}
+\author{Seth Hinz}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+In several robotics applications, reaction wheels are used to control the
+rotation of a body. However, they do have some drawbacks - size, mass, and
+controllability are all important factors to consider. For my term project, I
+will be analyzing a reaction wheel with variable radius, which may offer
+mitigations to these shortcomings.
+
+\section{Background}
+Before we introduce a reaction wheel with variable radius, it is useful to
+examine the simpler fixed-radius case. To provide the largest moment of inertia,
+we will model the reaction wheel as a thin ring of mass $m$ at a radius $r$ from
+the axis of rotation (which, importantly, is the symmetry axis of the ring).\\
+
+TODO IMAGE HERE \\
+
+From this model, we can calculate the moment of inertia via integrating over the
+mass:
+
+\begin{align}
+	I &= \oint_\mathrm{ring} \dif m \\
+	  &= \int_0^{2\pi} (\frac{m}{2 \pi r}) (r^2) r \dif \theta \\
+	  &= \frac{mr^2}{2\pi}\int_0^{2\pi} \dif \theta \\
+	  &= mr^2
+\end{align}
+
+Using this result, we can now find the angular momentum of the system.
+
+\begin{align}
+	L &= I \omega \\
+	  &= \omega mr^2 \label{eq:linear_L}
+\end{align}
+
+Earlier, I stated that the controllability of a reaction wheel needs to be
+considered during the design process. Equation \eqref{eq:linear_L} shows why this is
+true - the angular momentum added to a body by a reaction wheel is only linear
+in the angular velocity. So, if a large amount of angular acceleration is
+needed quickly, a motor driving a reaction wheel must drastically alter its
+speed.
+
+\section{Variable Radius}
+The motivation for using a wheel with changing radius can now be illustrated.
+If the radial term in equation \eqref{eq:linear_L} was replaced by an increasing
+function in $\omega$ (namely, $L(\omega) = m \omega \cdot r(\omega)^2$), then we
+could push $L(\omega)$ far above linearity. Any motor speed decrease that
+maintains angular momentum will come at the cost of a larger torque, of course,
+but this may be a desirable tradeoff.
+
+This insight led me to investigate a reaction wheel that uses discrete,
+spring-affixed masses about a central hub. In this model, each spring is
+flexible in only the radial direction, which reduces the number of degrees of
+freedom in this problem. Each appendage has mass $m$, and there are $N$ of them
+in total. The rotation of the system is measured via the angle of $r_0$, which
+is referred to as $\theta_0$.
+
+\begin{center}
+	\includegraphics[width=\textwidth]{project}
+\end{center}
+
+
+One important thing to note is that this model cannot enforce all radii to be
+the same. $r_0$, the radius of the first arm, might be different than $r_1$ due
+to gravitational effects. Keeping this in mind, we will first model the most
+general version of this system that we can, and then simplify as needed.
+
+We begin by finding the coordinates and velocities of the involved objects:
+
+\begin{align}
+	\theta_n &= \theta_0 + 2\pi\frac{n}{N}\\
+	\dot{\theta_n} &= \dot{\theta_0} \equiv \omega \\
+	x_i &= r_n \cos(\theta_n)\\
+	y_i &= r_n \sin(\theta_n)\\
+	\dot{x_n} &= \dot{r_n} \cos(\theta_n) - r_n \sin(\theta_n)\omega\\
+	\dot{y_n} &= \dot{r_n} \sin(\theta_n) + r_n \cos(\theta_n)\omega
+\end{align}
+
+Now, we can model the kinetic energy of the system.
+
+\begin{align}
+	T &= \sum_{n=0}^N \frac{1}{2} m (\dot{x_n}^2 + \dot{y_n}^2)\\
+	  &= \frac{mN}{2} \sum_{n=0}^N
+		(\dot{r_n} \cos(\theta_n) - r_n \sin(\theta_n)\omega)^2
+		+ (\dot{r_n} \sin(\theta_n) + r_n \cos(\theta_n)\omega)^2\\
+	  &= \frac{mN}{2} \sum_{n=0}^N \left(\dot{r_n}^2 + r_n^2 \omega^2\right)
+\end{align}
+
+Next, we find the potential energy:
+
+\begin{align}
+	U &= \sum_{n=0}^N \left(\frac{1}{2}k(\ell_0-r_n)^2 + m g r_n
+		\sin(\theta_n)\right)
+\end{align}
+
+Finally, we can combine these to yield the lagrangian for this system.
+
+\begin{align}
+	\mathcal{L} &= T - U\\
+		&= \sum_{n=0}^N \frac{m}{2}\left(\dot{r_n}^2 + r_n^2
+			\omega^2\right) - \frac{1}{2}k(\ell_0-r_n)^2 - m g r_n \sin(\theta_n)
+\end{align}
+
+
+\end{document}
