@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{mathtools}
+\usepackage{amsfonts}
 \usepackage{calrsfs}
 \usepackage{graphicx}
 
@@ -153,7 +154,7 @@ a single computation.
 	= m \ddot{r_n}\\
 	&= \pderiv{\lgr}{r_n}
 	= \left( m\dot{\theta_0}^2r_n
-		+ kr_n - mg\sin(\theta_n)
+		+ k(\ell_0-r_n) - mg\sin(\theta_n)
 	\right)
 \end{align}
 
@@ -162,13 +163,66 @@ fundamental frequency, $\omega_0 = \sqrt{\frac{k}{m}}$, into this calculation by
 dividing mass through.
 
 \begin{align}
-	\sum_{n=0}^{N-1} \ddot{r_n}
-	&= \sum_{n=0}^{N-1} \left( \dot{\theta_0}^2r_n
-		+ \frac{k}{m}r_n - g\sin(\theta_n)
-	\right)
-	&= \sum_{n=0}^{N-1} \left( \dot{\theta_0}^2r_n
-		+ \omega_0^2r_n - g\sin(\theta_n)
-	\right)
+	\ddot{r_n}
+	&= \dot{\theta_0}^2r_n + \frac{k}{m}(\ell_0-r_n) - g\sin(\theta_n) \\
+	&= \dot{\theta_0}^2r_n + \omega_0^2(\ell_0-r_n) - g\sin(\theta_n)
+\end{align}
+
+To summarize, our Euler-Lagrange equations are shown below.
+
+\begin{gather}
+	\ddot{r_n} = \dot{\theta_0}^2r_n + \omega_0^2(\ell_0-r_n) - g\sin(\theta_n),\ 
+		\forall n \in [0, N-1] \\
+	\sum_{n=0}^{N-1} \ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}
+	= -g\sum_{n=0}^{N-1}r_n\cos(\theta_n)\dot{\theta_0}
+\end{gather}
+
+\section{Analysis}
+The equations that we just derived are a little too rich to solve by hand (for a
+third year, at least), but we can further simplify them to find some important
+truths.
+
+For our analysis, we'll set $g$ to zero, which represents the behaviour of the
+system when it is coplanar with the ground. Furthermore, we'll assume that the
+springs are initially in equilibrium. This might seem like it is only an initial
+condition, but it is actually much more powerful. By symmetry, there is no
+difference between $r_0$ and $r_1$, or any other combination. So, if the initial
+conditions are the same, and gravity is zero, then $r_i(t) = r_j(t)\ \forall\ i,
+j, t$.
+
+Let's write these changes into effect:
+
+\begin{gather}
+	\ddot{r} = \dot{\theta_0}^2r + \omega_0^2(\ell_0-r)\\
+	N\left(\ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}\right)
+	= -gr\dot{\theta_0}\sum_{n=0}^{N-1}\cos(\theta_n)
+\end{gather}
+
+To simplify further, note the following trig identity:
+
+\begin{align}
+	\sum_{n=0}^{N-1}\cos(\theta_0 + 2\pi \frac{n}{N}) = \cos(\theta_0)\ \forall N \in
+	\mathbb{Z}
+\end{align}
+
+Thus, our reduced equations are as follows:
+
+\begin{gather}
+	\ddot{r} = \dot{\theta_0}^2r + \omega_0^2(\ell_0-r)\\
+	-gr\dot{\theta_0}\cos(\theta_n)
+	= N\left(\ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}\right)
+\end{gather}
+
+These are far more managable, but still nonlinear. To continue, we'll have to
+taylor expand around $\theta_0 = 0, r = \ell_0$ in several places.
+
+First, we'll do this to the angular equation.
+
+\begin{align}
+	-gr\dot{\theta_0}\cos(\theta_n)
+	&\approx -gr \dot{\theta_0}\\
+	N\left(\ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}\right)
+	&\approx N()
 \end{align}
 
 \end{document}
