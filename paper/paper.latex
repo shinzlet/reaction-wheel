@@ -190,39 +190,58 @@ difference between $r_0$ and $r_1$, or any other combination. So, if the initial
 conditions are the same, and gravity is zero, then $r_i(t) = r_j(t)\ \forall\ i,
 j, t$.
 
-Let's write these changes into effect:
-
-\begin{gather}
-	\ddot{r} = \dot{\theta_0}^2r + \omega_0^2(\ell_0-r)\\
-	N\left(\ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}\right)
-	= -gr\dot{\theta_0}\sum_{n=0}^{N-1}\cos(\theta_n)
-\end{gather}
-
-To simplify further, note the following trig identity:
+Let's write the reduced Lagrangian for our simpler system here (note that the
+full-complexity system will be used later on for simulation purposes).
 
 \begin{align}
-	\sum_{n=0}^{N-1}\cos(\theta_0 + 2\pi \frac{n}{N}) = \cos(\theta_0)\ \forall N \in
-	\mathbb{Z}
+	\lgr_r &= T - U\\
+		&= \sum_{n=0}^{N-1} \frac{m}{2}\left(\dot{r_n}^2 + r_n^2
+			\dot{\theta_0}^2\right) - \frac{1}{2}k(\ell_0-r_n)^2
+		\\
+		&= \frac{Nm}{2}\left(\dot{r}^2 + r^2 \dot{\theta_0}^2\right)
+		  - \frac{Nk}{2}(\ell_0-r)^2
 \end{align}
 
-Thus, our reduced equations are as follows:
-
-\begin{gather}
-	\ddot{r} = \dot{\theta_0}^2r + \omega_0^2(\ell_0-r)\\
-	-gr\dot{\theta_0}\cos(\theta_n)
-	= N\left(\ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}\right)
-\end{gather}
-
-These are far more managable, but still nonlinear. To continue, we'll have to
-taylor expand around $\theta_0 = 0, r = \ell_0$ in several places.
-
-First, we'll do this to the angular equation.
+We want to use the small oscillations approximation to make this system more
+managable. So, we will taylor expand the lagrangian around $\theta_0 = 0,\ r =
+\ell_0$
 
 \begin{align}
-	-gr\dot{\theta_0}\cos(\theta_n)
-	&\approx -gr \dot{\theta_0}\\
-	N\left(\ddot{\theta_0}r_n^2 + 2r_n\dot{\theta_0}\dot{r_n}\right)
-	&\approx N()
+	\lgr_r &\underset{{\mathbf{q}\approx\mathbf{q}_0}}{\approx}
+	\frac{Nm}{2}\left( \dot{r}^2 + 2\ell_0(r-\ell_0)\dot{\theta_0}^2 \right)
+	-\frac{Nk}{2}(\ell_0-r)^2
+\end{align}
+
+Next, we find our Euler-Lagrange equations:
+
+\begin{align}
+	\deriv{}{t} \left(\pderiv{\lgr_r}{\dot{\theta_0}}\right)
+	&\approx \deriv{}{t} \left(2Nm\ell_0(r-\ell_0)\dot{\theta}\right)\\
+	&= 2Nm\ell_0\left(\dot{r}\dot{\theta} + (r-\ell_0)\ddot{\theta}\right)\\
+	&\approx \pderiv{\lgr_r}{\theta_0} = 0
+\end{align}
+
+The coefficients are clearly unrelated to the behaviour of this system. Dividing
+them through:
+
+\begin{align}
+	\dot{r}\dot{\theta} + (r-\ell_0)\ddot{\theta} = 0
+	\label{eq:simple_theta_el}
+\end{align}
+
+Next, we do the same for the radial equation:
+
+\begin{align}
+	\deriv{}{t} \left(\pderiv{\lgr_r}{\dot{r}}\right)
+	&\approx Nm\dot{r}\\
+	&\approx \pderiv{\lgr}{r}\\
+	&\approx Nm\ell_0\dot{\theta_0}^2 - Nk(\ell_0-r)
+\end{align}
+
+Dividing through $N$ and $m$:
+
+\begin{align}
+	\dot{r} = \ell_0\dot{\theta_0}^2 - \omega_0^2(\ell_0-r)
 \end{align}
 
 \end{document}
