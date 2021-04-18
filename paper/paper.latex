@@ -233,7 +233,7 @@ Next, we do the same for the radial equation:
 
 \begin{align}
 	\deriv{}{t} \left(\pderiv{\lgr_r}{\dot{r}}\right)
-	&\approx Nm\dot{r}\\
+	&\approx Nm\ddot{r}\\
 	&\approx \pderiv{\lgr}{r}\\
 	&\approx Nm\ell_0\dot{\theta_0}^2 - Nk(\ell_0-r)
 \end{align}
@@ -241,7 +241,23 @@ Next, we do the same for the radial equation:
 Dividing through $N$ and $m$:
 
 \begin{align}
-	\dot{r} = \ell_0\dot{\theta_0}^2 - \omega_0^2(\ell_0-r)
+	\ddot{r} = \ell_0\dot{\theta_0}^2 - \omega_0^2(\ell_0-r)
+\end{align}
+
+These equations are much more managable, but we'll introduce a final simplification
+motivated by a common term.
+
+\begin{align}
+	x &\equiv r - \ell_0\\
+	\dot{x} &= \dot{r}\\
+	\ddot{x} &= \ddot{r}
+\end{align}
+
+So, our small-oscillations equations become the following:
+
+\begin{align}
+	\ddot{x} &= \ell_0\dot{\theta_0}^2 + x\omega_0^2\\
+	0 &= \dot{x}\dot{\theta} + x\ddot{\theta}
 \end{align}
 
 \end{document}
