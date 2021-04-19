@@ -1,5 +1,5 @@
 class Simulator
-  property grav : Float64 = 90.81f64
+  property grav : Float64 = 200.81f64
   property frequency : Float64
   property rest_length : Float64
 
@@ -14,7 +14,7 @@ class Simulator
     @mass = mass.to_f64
     @rest_length = natural_length.to_f64
     @spring_constant = spring_constant.to_f64
-    @log = StaticArray[start_state, start_state(@timestep)]
+    @log = StaticArray[start_state, start_state(0.005f64)]
     @frequency = Math.sqrt(@spring_constant / @mass)
   end
 
@@ -51,7 +51,7 @@ class Simulator
   end
 
   def start_state(angle = 0f64)
-    State.new(Array.new(@count, @rest_length / 1.5), angle)
+    State.new(Array.new(@count, @rest_length / 1.2), angle)
   end
 
   def state

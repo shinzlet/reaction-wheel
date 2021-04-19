@@ -41,14 +41,11 @@ class Visualizer
     end
   end
 
-  @slip = 0f64
   def draw(window)
     center = vector2(400, 300)
     state = @simulator.state
 
     state.lengths.each_with_index do |length, idx|
-      break if idx > @slip
-      @slip += 0.001f64
       rod_angle_rad = state.angle + idx.to_f64 / @simulator.count * 2 * Math::PI
       rod_angle = - 180 / Math::PI * rod_angle_rad
       screen_length = length / 8

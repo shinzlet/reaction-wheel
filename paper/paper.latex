@@ -182,82 +182,67 @@ The equations that we just derived are a little too rich to solve by hand (for a
 third year, at least), but we can further simplify them to find some important
 truths.
 
-For our analysis, we'll set $g$ to zero, which represents the behaviour of the
-system when it is coplanar with the ground. Furthermore, we'll assume that the
-springs are initially in equilibrium. This might seem like it is only an initial
-condition, but it is actually much more powerful. By symmetry, there is no
-difference between $r_0$ and $r_1$, or any other combination. So, if the initial
-conditions are the same, and gravity is zero, then $r_i(t) = r_j(t)\ \forall\ i,
-j, t$.
+For our analysis, we'll restrict N to being 1, and then use a small oscillation
+approximation to compute the system's properties. This may seem overly restrictive,
+but will provide some insight into how the changing spring angle affects its extension.
 
-Let's write the reduced Lagrangian for our simpler system here (note that the
-full-complexity system will be used later on for simulation purposes).
+We begin by formulating our reduced lagrangian:
 
 \begin{align}
-	\lgr_r &= T - U\\
-		&= \sum_{n=0}^{N-1} \frac{m}{2}\left(\dot{r_n}^2 + r_n^2
-			\dot{\theta_0}^2\right) - \frac{1}{2}k(\ell_0-r_n)^2
-		\\
-		&= \frac{Nm}{2}\left(\dot{r}^2 + r^2 \dot{\theta_0}^2\right)
-		  - \frac{Nk}{2}(\ell_0-r)^2
+	\lgr_r &= \frac{m}{2}\left(\dot{r}^2+r^2\dot{\theta}^2\right)
+		-\frac{1}{2}k(\ell_0-r)^2-mgr\sin{\theta}
 \end{align}
 
-We want to use the small oscillations approximation to make this system more
-managable. So, we will taylor expand the lagrangian around $\theta_0 = 0,\ r =
-\ell_0$
+To use a small oscillations approximation, we'll first taylor expand around the
+global minimum of $U$, namely $(r, \theta) = (\ell_0, 0)$.
 
 \begin{align}
-	\lgr_r &\underset{{\mathbf{q}\approx\mathbf{q}_0}}{\approx}
-	\frac{Nm}{2}\left( \dot{r}^2 + 2\ell_0(r-\ell_0)\dot{\theta_0}^2 \right)
-	-\frac{Nk}{2}(\ell_0-r)^2
+	\lgr_r &\approx \frac{m}{2}\left(\dot{r}^2+2\ell_0(r-\ell_0)\dot{\theta}^2\right)
+		-\frac{k}{2}(r-\ell_0)^2-mgr\theta
 \end{align}
 
-Next, we find our Euler-Lagrange equations:
+This has allowed us to reduce overall nonlinearity, as well as remove the sinusoid.
+Next, we'll take the Euler-Lagrange equations:
 
 \begin{align}
-	\deriv{}{t} \left(\pderiv{\lgr_r}{\dot{\theta_0}}\right)
-	&\approx \deriv{}{t} \left(2Nm\ell_0(r-\ell_0)\dot{\theta}\right)\\
-	&= 2Nm\ell_0\left(\dot{r}\dot{\theta} + (r-\ell_0)\ddot{\theta}\right)\\
-	&\approx \pderiv{\lgr_r}{\theta_0} = 0
+	\deriv{}{t} \left(\pderiv{\lgr}{\dot{r}}\right)
+	&= \deriv{}{t} \left( m \dot{r} \right)
+	= m \ddot{r}\\
+	&= \pderiv{\lgr}{r}
+	=m\ell_0\dot{\theta}^2 - k(r-\ell_0)-mg\theta\\
+	\implies \ddot{r} &= \ell_0\dot{\theta}^2-\omega_0^2(r-\ell_0)-g\theta\\
+	\\
+	\deriv{}{t} \left(\pderiv{\lgr}{\dot{\theta}}\right)
+	&= \deriv{}{t} \left( 2\ell_0(r-\ell_0)\dot{\theta} \right)\\
+	&= 2\ell_0\left(\dot{r}\dot{\theta}+(r-\ell_0)\ddot{\theta}\right)\\
+	&= \pderiv{\lgr}{\theta}\\
+	&= -mgr\\
+	\implies -\frac{mg}{2\ell_0}r &= \dot{r}\dot{\theta} + (r-\ell_0)\ddot{\theta}
 \end{align}
 
-The coefficients are clearly unrelated to the behaviour of this system. Dividing
-them through:
+These are workable as they are, but we can simplify further by changing from total spring
+length to spring displacement.
+
+\begin{gather}
+	x \equiv r - \ell_0\\
+	-\frac{mg}{2\ell_0}(x - \ell_0) = \dot{x}\dot{\theta} + x\ddot{\theta} \label{eq:first}\\
+	\ddot{x}+\omega_0^2x = \ell_0\dot{\theta}^2-g\theta \label{eq:second}
+\end{gather}
+
+Now, we'll employ the small oscillations approximation:
 
 \begin{align}
-	\dot{r}\dot{\theta} + (r-\ell_0)\ddot{\theta} = 0
-	\label{eq:simple_theta_el}
+	x(t) &\equiv A\cos(\omega t + \phi)\\
+	\theta(t) &\equiv B\cos(\omega t + \phi)
 \end{align}
 
-Next, we do the same for the radial equation:
+We'll begin with equation \eqref{eq:first}:
 
 \begin{align}
-	\deriv{}{t} \left(\pderiv{\lgr_r}{\dot{r}}\right)
-	&\approx Nm\ddot{r}\\
-	&\approx \pderiv{\lgr}{r}\\
-	&\approx Nm\ell_0\dot{\theta_0}^2 - Nk(\ell_0-r)
-\end{align}
-
-Dividing through $N$ and $m$:
-
-\begin{align}
-	\ddot{r} = \ell_0\dot{\theta_0}^2 - \omega_0^2(\ell_0-r)
-\end{align}
-
-These equations are much more managable, but we'll introduce a final simplification
-motivated by a common term.
-
-\begin{align}
-	x &\equiv r - \ell_0\\
-	\dot{x} &= \dot{r}\\
-	\ddot{x} &= \ddot{r}
-\end{align}
-
-So, our small-oscillations equations become the following:
-
-\begin{align}
-	\ddot{x} &= \ell_0\dot{\theta_0}^2 + x\omega_0^2\\
-	0 &= \dot{x}\dot{\theta} + x\ddot{\theta}
+	-\frac{mg}{2\ell_0}(x - \ell_0) &= -\frac{mg}{2\ell_0}\left(A\cos(\omega t + \phi) - \ell_0\right) \\
+	&= \dot{x}\dot{\theta} + x\ddot{\theta}\\
+	&= AB\omega^2\sin^2(\omega t + \phi) - AB\omega^2 \cos^2(\omega t + \phi)\\
+	&= AB\omega^2(
 \end{align}
 
 \end{document}
