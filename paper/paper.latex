@@ -194,76 +194,98 @@ We begin by formulating our reduced lagrangian:
 \end{align}
 
 To use a small oscillations approximation, we'll first taylor expand around the
-global minimum of $U$, namely $(r, \theta) = (\ell_0, 0)$.
+global minimum of $U$, which we'll find now:
+
+\begin{gather}
+	\pderiv{U_r}{\theta} = -mgr\cos(\theta) \equiv 0\\
+	r \neq 0 \implies \cos(\theta) = 0\\
+	\theta = \pm \frac{\pi}{2}
+\end{gather}
+
+Obviously, the stable equilibrium will occur when the mass is at its lowest point
+(otherwise, the situation is analogous to an inverted pendulum). So, $\theta_0 =
+-\frac{\pi}{2}$ (note: $\theta_0$ is used to refer to the equilibrium angle in
+this section, but it is used in other sections to refer to the angle between the
++x axis and the first arm.)
+
+\begin{gather}
+	\pderiv{U_r}{r} = k(\ell_0-r)-mg\sin(\theta) \equiv 0\\
+	\implies r=\ell_0-\frac{mg}{k}\sin(\theta)\\
+	\theta = -\frac{\pi}{2} \implies r = \ell_0 + \frac{mg}{k}
+\end{gather}
+
+Thus, our stable equilibrium point is $(r_0, \theta_0) = (\ell_0 + \frac{mg}{k}, -\frac{pi}{2})$.
+
+Now, we can take our taylor expansion of the lagrangian. This calculation was tedious
+and not very enlightening, so was not typeset - the rough work for this project
+is available in its github repository (github.com/shinzlet/reaction-wheel).
 
 \begin{align}
-	\lgr_r &\approx \frac{m}{2}\left(\dot{r}^2+\ell_0^2\dot{\theta}^2\right)
-	- mgr\theta
+	\lgr_r = \frac{m}{2}\left(\dot r^2+r_0^2\dot\theta^2\right)
+		- \frac{k}{2}(r-r_0)^2-\frac{mgr_0}{2}(\theta+\frac{\pi}{2})^2
 \end{align}
 
-This has allowed us to reduce overall nonlinearity, as well as remove the sinusoid.
-Next, we'll take the Euler-Lagrange equations:
+Now, we can compute the simplified Euler-Lagrange equations:
 
 \begin{align}
-	\deriv{}{t} \left(\pderiv{\lgr}{\dot{r}}\right)
-	&= \deriv{}{t} \left( m \dot{r} \right)
-	= m \ddot{r}\\
-	&= \pderiv{\lgr}{r} = -mg\theta\\
-	\implies \ddot{r}=-g\theta\\
+	\deriv{}{t}\left(\pderiv{\lgr_r}{\dot r}\right) &= m\ddot r\\
+	&= \pderiv{\lgr_r}{r} =-k(r-r_0)\\
+	\implies \ddot r &= - \omega_0^2 (r - r_0)
 \end{align}
 
 \begin{align}
-	\deriv{}{t} \left(\pderiv{\lgr}{\dot{\theta}}\right) &= m\ell_0^2\ddot{\theta}
-	= \pderiv{\lgr}{\theta} = mgr\\
-	\implies \ell_0^2\ddot{\theta} = gr
+	\deriv{}{t}\left(\pderiv{\lgr_r}{\dot \theta}\right) &= mr_0^2\ddot \theta\\
+	&= \pderiv{\lgr_r}{\theta} = -mgr_0(\theta+\frac{\pi}{2})\\
+	\implies r_0\ddot \theta &= -g(\theta + \frac{\pi}{2})
 \end{align}
 
-Now, we'll employ the small oscillations approximation. Note that the constants are
-in different units - length ($A$) and angle ($B$).
+These expressions must be simplified via a change of variables:
 
 \begin{align}
-	r(t) &\equiv A \cos(\omega t + \phi)\\
-	\theta(t) &\equiv B\cos(\omega t + \phi)
+	&\theta + \frac{\pi}{2} \rightarrow \phi\\
+	&r - r_0 \rightarrow x\\
+	\implies &\ddot x = -\omega_0^2 x\\
+	\implies &\ddot \phi = -\frac{g}{r_0}\phi
+\end{align}
+
+These equations are very interesting, because they look identical to the motion of a
+spring at rest, and the motion of a planar pendulum, respectively. And, in fact,
+a superposition of those two systems would be a very good description of the $N=1$
+system.
+
+To solve this, we'll use the standard perscription for small oscillations.
+Note that the constants are in different units - length ($A$) and angle ($B$).
+
+\begin{align}
+	x(t) &\equiv A \cos(\omega t + \gamma)\\
+	\phi(t) &\equiv B\cos(\Omega t + \delta)
+\end{align}
+
+Note that there are different frequencies for these - this is because our taylor
+expansion was, although standard, too simple to capture the coupling in this system.
+As a result, there might not be a common frequency.
+
+\begin{align}
+	\ddot x &= -\omega^2 A \cos(\omega t + \gamma)\\
+	&= -\omega_0^2 x\\
+	&= -\omega_0^2 A \cos(\omega t + \gamma)\\
+	\implies \omega^2 &= \omega_0^2\ \mathrm{where}\ \omega_0 = \sqrt \frac{k}{m}\\
+	\implies \omega &= \pm \sqrt \frac{k}{m}
 \end{align}
 
 \begin{align}
-	\ddot{r}&=-\omega^2 A\cos(\omega t + \phi)\\
-		&=-g\theta = -gB\cos(\omega t + \phi)\\
-	\implies \omega^2 A &= g B\\
+	\ddot \phi &= -\Omega^2 B \cos(\Omega t + \delta)\\
+	&= -\frac{g}{r_0} B \cos(\Omega t + \delta)\\
+	\implies \Omega^2 &= \frac{g}{r_0}\\
+	\implies \Omega &= \pm \sqrt\frac{g}{\ell_0 + \frac{mg}{k}}
 \end{align}
+
+Finally, we can reverse the substitutions:
 
 \begin{align}
-	\ell_0^2\ddot{\theta} &= \ell_0^2 B \omega^2 \cos(\omega t + \phi)\\
-		&= gr = g A \cos(\omega t + \phi)\\
-	\implies \ell_0^2\omega^2B&=gA
+	r(t) = \ell_0 + \frac{mg}{k} + A\cos(\pm\sqrt \frac{k}{m}t+\gamma)\\
+	\theta(t) = B\cos(\pm\sqrt\frac{g}{\ell_0+\frac{mg}{k}}t+\delta) - \frac{pi}{2}
 \end{align}
-
-We cannot solve for all three of these new parameters with only two equations, so we'll
-solve simply for $\omega$ and the ratio of amplitudes, $C\equiv \frac{A}{B}$.
-
-\begin{align}
-	\omega^2 \frac{A}{B}&=\omega^2 C = g\\
-	\implies C &= \frac{g}{\omega^2}\\
-	\frac{\ell_0^2\omega^2}{g}&=C\\
-	\implies \frac{g}{\omega^2}&=\frac{\ell_0^2\omega^2}{g}\\
-	\implies g^2 &= \ell_0^2 \omega^4\\
-	\implies g &= \pm \ell_0 \omega^2\\
-	\implies \omega &= \pm \sqrt{\frac{g}{\ell_0}}
-\end{align}
-
-Note that we ignored two of the $\omega$ solutions, because they were complex. This is an
-interesting conclusion, but should not be particularly surprising. When the spring oscillations
-are very small, the system behaves like a planar pendulum with classical frequency $\sqrt{\frac{g}{L}}$.
-
-Next, we will find the ratio of amplitudes:
-
-\begin{align}
-	C = \frac{g}{\omega^2} = \ell_0
-\end{align}
-
-Phrased more clearly, this means that $A = \ell_0 B$ - the spring oscillates with the amplitude
-of the pendulum's angle, multiplied by the rest length. Importantly, this also means that
-the spring oscillation is particularly sensitive to the centrifugal action.
 
 \section{Numerical Approximation}
 In the previous sections, we examined this system from an analytical perspective. However, 
@@ -272,10 +294,27 @@ of many systems). To better understand the behavior of a variable-radius reactio
 we'll turn to numerical simulations.
 
 First, we must convert our euler-lagrange equations into a finite difference approximation.
+The angular equation used a forwards difference approximation of $\dot{theta}$.
+
+\begin{gather}
+	\theta_{i+1}=\frac{(2\beta-\Delta t \alpha)\theta_i +(\Delta \alpha - \beta)\theta_{i-1}-g\gamma\Delta t ^2}{\beta}\\
+	\mathrm{where}\ 
+	\Delta t \alpha = \sum_{n=0}^{N-1}2r_n^i(r_n^i-r_n^{i-1});\ \beta=\sum_{n=0}^{N-1}(r_n^i)^2\\
+	\gamma=\sum_{n=0}^{N-1}r_n^i\cos(\theta_i+2\pi\frac{n}{N})
+\end{gather}
+
 The r equations were transformed using the central difference approximation of $\ddot{r_i}$,
-and the backward difference approximation of $\dot{\theta_0}$. The angular equation used a
-forwards difference approximation of $\dot{theta}$. These choices seem arbitrary, but allow
-the $r_{n}$ term to be more easily solved for. Additional documents showing these
-transformations are available in this project's github repository
+and the backward difference approximation of $\dot{\theta_0}$.  These choices seem arbitrary, but allow
+the $r_{n}$ term to be more easily solved for.
+
+\begin{gather}
+	r_{n+1}=2r_n-r_{n-1}+(\theta_i-\theta_{i-1})^2r_n+\left(\omega^2(\ell_0-R_n)-g\sin(\theta_n^i)\right)\Delta t^2\\
+	\mathrm{where}\ \theta_n^i=\theta_i+2\pi\frac{n}{N}\\
+	\omega=\sqrt\frac{k}{m}
+\end{gather}
+
+These equations are obviously unpleasant, but many of the sums can be computed in the same
+for loop when implemented in code.
+
 
 \end{document}
