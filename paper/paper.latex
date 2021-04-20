@@ -197,8 +197,8 @@ To use a small oscillations approximation, we'll first taylor expand around the
 global minimum of $U$, namely $(r, \theta) = (\ell_0, 0)$.
 
 \begin{align}
-	\lgr_r &\approx \frac{m}{2}\left(\dot{r}^2+2\ell_0(r-\ell_0)\dot{\theta}^2\right)
-		-\frac{k}{2}(r-\ell_0)^2-mgr\theta
+	\lgr_r &\approx \frac{m}{2}\left(\dot{r}^2+\ell_0^2\dot{\theta}^2\right)
+	- mgr\theta
 \end{align}
 
 This has allowed us to reduce overall nonlinearity, as well as remove the sinusoid.
@@ -208,41 +208,74 @@ Next, we'll take the Euler-Lagrange equations:
 	\deriv{}{t} \left(\pderiv{\lgr}{\dot{r}}\right)
 	&= \deriv{}{t} \left( m \dot{r} \right)
 	= m \ddot{r}\\
-	&= \pderiv{\lgr}{r}
-	=m\ell_0\dot{\theta}^2 - k(r-\ell_0)-mg\theta\\
-	\implies \ddot{r} &= \ell_0\dot{\theta}^2-\omega_0^2(r-\ell_0)-g\theta\\
-	\\
-	\deriv{}{t} \left(\pderiv{\lgr}{\dot{\theta}}\right)
-	&= \deriv{}{t} \left( 2\ell_0(r-\ell_0)\dot{\theta} \right)\\
-	&= 2\ell_0\left(\dot{r}\dot{\theta}+(r-\ell_0)\ddot{\theta}\right)\\
-	&= \pderiv{\lgr}{\theta}\\
-	&= -mgr\\
-	\implies -\frac{mg}{2\ell_0}r &= \dot{r}\dot{\theta} + (r-\ell_0)\ddot{\theta}
+	&= \pderiv{\lgr}{r} = -mg\theta\\
+	\implies \ddot{r}=-g\theta\\
 \end{align}
 
-These are workable as they are, but we can simplify further by changing from total spring
-length to spring displacement.
+\begin{align}
+	\deriv{}{t} \left(\pderiv{\lgr}{\dot{\theta}}\right) &= m\ell_0^2\ddot{\theta}
+	= \pderiv{\lgr}{\theta} = mgr\\
+	\implies \ell_0^2\ddot{\theta} = gr
+\end{align}
 
-\begin{gather}
-	x \equiv r - \ell_0\\
-	-\frac{mg}{2\ell_0}(x - \ell_0) = \dot{x}\dot{\theta} + x\ddot{\theta} \label{eq:first}\\
-	\ddot{x}+\omega_0^2x = \ell_0\dot{\theta}^2-g\theta \label{eq:second}
-\end{gather}
-
-Now, we'll employ the small oscillations approximation:
+Now, we'll employ the small oscillations approximation. Note that the constants are
+in different units - length ($A$) and angle ($B$).
 
 \begin{align}
-	x(t) &\equiv A\cos(\omega t + \phi)\\
+	r(t) &\equiv A \cos(\omega t + \phi)\\
 	\theta(t) &\equiv B\cos(\omega t + \phi)
 \end{align}
 
-We'll begin with equation \eqref{eq:first}:
+\begin{align}
+	\ddot{r}&=-\omega^2 A\cos(\omega t + \phi)\\
+		&=-g\theta = -gB\cos(\omega t + \phi)\\
+	\implies \omega^2 A &= g B\\
+\end{align}
 
 \begin{align}
-	-\frac{mg}{2\ell_0}(x - \ell_0) &= -\frac{mg}{2\ell_0}\left(A\cos(\omega t + \phi) - \ell_0\right) \\
-	&= \dot{x}\dot{\theta} + x\ddot{\theta}\\
-	&= AB\omega^2\sin^2(\omega t + \phi) - AB\omega^2 \cos^2(\omega t + \phi)\\
-	&= AB\omega^2(
+	\ell_0^2\ddot{\theta} &= \ell_0^2 B \omega^2 \cos(\omega t + \phi)\\
+		&= gr = g A \cos(\omega t + \phi)\\
+	\implies \ell_0^2\omega^2B&=gA
 \end{align}
+
+We cannot solve for all three of these new parameters with only two equations, so we'll
+solve simply for $\omega$ and the ratio of amplitudes, $C\equiv \frac{A}{B}$.
+
+\begin{align}
+	\omega^2 \frac{A}{B}&=\omega^2 C = g\\
+	\implies C &= \frac{g}{\omega^2}\\
+	\frac{\ell_0^2\omega^2}{g}&=C\\
+	\implies \frac{g}{\omega^2}&=\frac{\ell_0^2\omega^2}{g}\\
+	\implies g^2 &= \ell_0^2 \omega^4\\
+	\implies g &= \pm \ell_0 \omega^2\\
+	\implies \omega &= \pm \sqrt{\frac{g}{\ell_0}}
+\end{align}
+
+Note that we ignored two of the $\omega$ solutions, because they were complex. This is an
+interesting conclusion, but should not be particularly surprising. When the spring oscillations
+are very small, the system behaves like a planar pendulum with classical frequency $\sqrt{\frac{g}{L}}$.
+
+Next, we will find the ratio of amplitudes:
+
+\begin{align}
+	C = \frac{g}{\omega^2} = \ell_0
+\end{align}
+
+Phrased more clearly, this means that $A = \ell_0 B$ - the spring oscillates with the amplitude
+of the pendulum's angle, multiplied by the rest length. Importantly, this also means that
+the spring oscillation is particularly sensitive to the centrifugal action.
+
+\section{Numerical Approximation}
+In the previous sections, we examined this system from an analytical perspective. However, 
+finding exact solutions of the motion of this system is likely not possible (as is true
+of many systems). To better understand the behavior of a variable-radius reaction wheel,
+we'll turn to numerical simulations.
+
+First, we must convert our euler-lagrange equations into a finite difference approximation.
+The r equations were transformed using the central difference approximation of $\ddot{r_i}$,
+and the backward difference approximation of $\dot{\theta_0}$. The angular equation used a
+forwards difference approximation of $\dot{theta}$. These choices seem arbitrary, but allow
+the $r_{n}$ term to be more easily solved for. Additional documents showing these
+transformations are available in this project's github repository
 
 \end{document}
