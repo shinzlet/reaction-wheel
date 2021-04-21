@@ -4,3 +4,7 @@ shards:
     git: https://github.com/oprypin/crsfml.git
     version: 2.5.2
 
+  ishi:
+    git: https://github.com/toddsundsted/ishi.git
+    version: 0.7.4
+

@@ -8,6 +8,7 @@ class Simulator
   getter spring_constant : Float64
   getter log : StaticArray(State, 2)
   getter timestep : Float64
+  getter time : Float64 = 0f64
 
   def initialize(count, mass, natural_length, spring_constant, @timestep = 0.001f64)
     @count = count.to_i32
@@ -18,7 +19,9 @@ class Simulator
     @frequency = Math.sqrt(@spring_constant / @mass)
   end
 
-  def step(dt = @timestep)
+  def step()
+    dt = @timestep
+    @time += dt
     # These coefficients are used in the angle calculation
     half_dt_alpha, beta, gamma = 0f64, 0f64, 0f64
 
@@ -56,6 +59,14 @@ class Simulator
 
   def state
     @log[0]
+  end
+
+  def angular_momentum
+    @mass * angular_vel.abs * (@log[0].lengths.map &.**(2)).sum
+  end
+
+  def angular_vel
+    (@log[0].angle-@log[1].angle)/@timestep
   end
 end
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.4.19)  19 APR 2021 22:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.4.19)  20 APR 2021 22:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -209,52 +209,69 @@ LaTeX Font Info:    Trying to load font information for OMS+rsfs on input line
 21.
 
 (/usr/share/texmf-dist/tex/latex/calrsfs/OMSrsfs.fd)
-Underfull \hbox (badness 10000) in paragraph at lines 31--35
+Underfull \hbox (badness 10000) in paragraph at lines 24--33
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 36--37
+Underfull \hbox (badness 10000) in paragraph at lines 35--39
 
  []
 
+<fixed_radius.png, id=1, 261.97874pt x 273.27094pt>
+File: fixed_radius.png Graphic file (type png)
+<use fixed_radius.png>
+Package pdftex.def Info: fixed_radius.png  used on input line 41.
+(pdftex.def)             Requested size: 104.78964pt x 109.30643pt.
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<project.png, id=10, 495.7722pt x 291.9708pt>
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <./fixed_radius.png>]
+<project.png, id=21, 495.7722pt x 291.9708pt>
 File: project.png Graphic file (type png)
 <use project.png>
-Package pdftex.def Info: project.png  used on input line 78.
+Package pdftex.def Info: project.png  used on input line 84.
 (pdftex.def)             Requested size: 390.0pt x 229.68764pt.
- [2] [3 <./project.png>]
-[4] [5]
-Overfull \hbox (2.96814pt too wide) in paragraph at lines 219--222
-\OT1/cmr/m/n/12 this project is avail-able in its github repos-i-tory (github.c
-om/shinzlet/reaction-
- []
-
-[6] [7] [8] [9] (./paper.aux) ) 
+[3 <./project.png>] [4] [5] [6] [7] [8] [9]
+<sim.png, id=47, 509.905pt x 471.7625pt>
+File: sim.png Graphic file (type png)
+<use sim.png>
+Package pdftex.def Info: sim.png  used on input line 368.
+(pdftex.def)             Requested size: 284.52756pt x 263.25658pt.
+ [10]
+<free_rotation.png, id=51, 642.4pt x 481.8pt>
+File: free_rotation.png Graphic file (type png)
+<use free_rotation.png>
+Package pdftex.def Info: free_rotation.png  used on input line 379.
+(pdftex.def)             Requested size: 284.52756pt x 213.39682pt.
+ [11 <./sim.png>]
+<quadratic_rotation.png, id=56, 642.4pt x 481.8pt>
+File: quadratic_rotation.png Graphic file (type png)
+<use quadratic_rotation.png>
+Package pdftex.def Info: quadratic_rotation.png  used on input line 394.
+(pdftex.def)             Requested size: 284.52756pt x 213.39682pt.
+ [12 <./free_rotation.png>] [13 <./quadratic_rotation.png>] (./paper.aux) ) 
 Here is how much of TeX's memory you used:
- 2529 strings out of 479383
- 36896 string characters out of 5875830
- 327392 words of memory out of 5000000
- 19625 multiletter control sequences out of 15000+600000
- 412571 words of font info for 65 fonts, out of 8000000 for 9000
+ 2560 strings out of 479383
+ 37456 string characters out of 5875830
+ 329394 words of memory out of 5000000
+ 19655 multiletter control sequences out of 15000+600000
+ 413532 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  78i,11n,85p,261b,210s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.p
-fb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/s
-hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist
-/fonts/type1/public/rsfs/rsfs10.pfb>
-Output written on paper.pdf (9 pages, 159010 bytes).
+</us
+r/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.p
+fb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
+i12.pfb></usr/share/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb>
+Output written on paper.pdf (13 pages, 268226 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 53 compressed objects within 1 object stream
+ 100 PDF objects out of 1000 (max. 8388607)
+ 65 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

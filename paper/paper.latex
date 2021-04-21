@@ -26,14 +26,20 @@ rotation of a body. However, they do have some drawbacks - size, mass, and
 controllability are all important factors to consider. For my term project, I
 will be analyzing a reaction wheel with variable radius, which may offer
 mitigations to these shortcomings.
+\\
+\\
+\textbf{Note:} media and source code associated with this project can be
+found at \emph{github.com/shinzlet/reaction-wheel}.
 
-\section{Background}
+\subsection{Traditional Construction}
 Before we introduce a reaction wheel with variable radius, it is useful to
 examine the simpler fixed-radius case. To provide the largest moment of inertia,
 we will model the reaction wheel as a thin ring of mass $m$ at a radius $r$ from
 the axis of rotation (which, importantly, is the symmetry axis of the ring).\\
 
-TODO IMAGE HERE \\
+\begin{center}
+	\includegraphics[scale=0.4]{fixed_radius}
+\end{center}
 
 From this model, we can calculate the moment of inertia via integrating over the
 mass:
@@ -59,7 +65,7 @@ in the angular velocity. So, if a large amount of angular acceleration is
 needed quickly, a motor driving a reaction wheel must drastically alter its
 speed.
 
-\section{Variable Radius}
+\subsection{Variable Radius}
 The motivation for using a wheel with changing radius can now be illustrated.
 If the radial term in equation \eqref{eq:linear_L} was replaced by an increasing
 function in $\omega$ (namely, $L(\omega) = m \omega \cdot r(\omega)^2$), then we
@@ -84,6 +90,8 @@ the same. $r_0$, the radius of the first arm, might be different than $r_1$ due
 to gravitational effects. Keeping this in mind, we will first model the most
 general version of this system that we can, and then simplify as needed.
 
+\section{Lagrangian Model}
+\subsection{General Case}
 We begin by finding the coordinates and velocities of the involved objects:
 
 \begin{align}
@@ -177,14 +185,28 @@ To summarize, our Euler-Lagrange equations are shown below.
 	= -g\sum_{n=0}^{N-1}r_n\cos(\theta_n)\dot{\theta_0}
 \end{gather}
 
-\section{Analysis}
-The equations that we just derived are a little too rich to solve by hand (for a
-third year, at least), but we can further simplify them to find some important
-truths.
+\subsection{Angular Momentum}
+Recall that the motivation of this system is to change the relationship between
+angular velocity and angular momentum within a system. Although we cannot
+calculate this particular function, it is important to see how we \emph{could}
+compute the angular momentum in a variable-radius model.
 
-For our analysis, we'll restrict N to being 1, and then use a small oscillation
-approximation to compute the system's properties. This may seem overly restrictive,
-but will provide some insight into how the changing spring angle affects its extension.
+\begin{align}
+	I &= m \sum_{n=0}^{N-1} r_n^2\\
+	\implies L &= m\dot\theta\sum_{n=0}^{N-1} r_n^2
+\end{align}
+
+\subsection{Simplified Analysis}
+The lagrangian that we just derived is too rich to solve by hand (for a
+third year, at least), but it is hard to interpret them. In such situations, it
+is often desirable to use an approximate system where oscillations about an
+equilibrium are small. If this strategy works here, it may provide some insight
+into the angular momentum response of this system.
+
+For our analysis, we'll restrict N to being 1, which will effectively model a
+spring-pendulum system. This restriction is needed both for simplicity and for
+an equilibrium to exist - any higher number of masses would counterbalance the
+system, which would make the equilibrium angle non-constant.
 
 We begin by formulating our reduced lagrangian:
 
@@ -218,7 +240,7 @@ Thus, our stable equilibrium point is $(r_0, \theta_0) = (\ell_0 + \frac{mg}{k},
 
 Now, we can take our taylor expansion of the lagrangian. This calculation was tedious
 and not very enlightening, so was not typeset - the rough work for this project
-is available in its github repository (github.com/shinzlet/reaction-wheel).
+is available in its GitHub repository.
 
 \begin{align}
 	\lgr_r = \frac{m}{2}\left(\dot r^2+r_0^2\dot\theta^2\right)
@@ -248,13 +270,10 @@ These expressions must be simplified via a change of variables:
 	\implies &\ddot \phi = -\frac{g}{r_0}\phi
 \end{align}
 
-These equations are very interesting, because they look identical to the motion of a
-spring at rest, and the motion of a planar pendulum, respectively. And, in fact,
-a superposition of those two systems would be a very good description of the $N=1$
-system.
-
-To solve this, we'll use the standard perscription for small oscillations.
-Note that the constants are in different units - length ($A$) and angle ($B$).
+These equations are reassuring, because they look identical to the motion of a
+spring at rest and the motion of a planar pendulum respectively.  To solve this,
+we'll use the standard prescription for small oscillations.  Note that the
+constants are in different units - length ($A$) and angle ($B$).
 
 \begin{align}
 	x(t) &\equiv A \cos(\omega t + \gamma)\\
@@ -287,34 +306,106 @@ Finally, we can reverse the substitutions:
 	\theta(t) = B\cos(\pm\sqrt\frac{g}{\ell_0+\frac{mg}{k}}t+\delta) - \frac{pi}{2}
 \end{align}
 
-\section{Numerical Approximation}
-In the previous sections, we examined this system from an analytical perspective. However, 
-finding exact solutions of the motion of this system is likely not possible (as is true
-of many systems). To better understand the behavior of a variable-radius reaction wheel,
-we'll turn to numerical simulations.
+Although these equations \emph{are} a valid approximation of the restricted
+system, we now see that this approach cannot help us determine the angular
+momentum response. The taylor approximation stripped the angle-radius coupling
+away, which means that that radius is not, in fact, a function of $\dot \theta$
+as we had initially posited. We'll have to use a more precise method to get our
+results.
 
-First, we must convert our euler-lagrange equations into a finite difference approximation.
-The angular equation used a forwards difference approximation of $\dot{theta}$.
+\section{Numerical Approximation}
+\subsection{Method}
+In the previous sections, we examined this system from an analytical
+perspective. However, these techniques alone were unable to see how angular
+momentum is related to angular velocity. To better understand the
+behavior of a variable-radius reaction wheel, we'll turn to numerical
+simulations.
+
+Because we are about to introduce a discrete time system, a few definitions are
+in order. We first redefine time to be discrete - $t = i\Delta t$. Next,
+we define the counterclockwise angle between the $+x$ axis and the $n$th arm of
+the reaction wheel as $\theta_n^i$, where $i$ signifies the time index.
+Similarly, the length of that arm at that same time is denoted $r_n^i$. Keep in
+mind that, although $r_n^i$ are independent of one another, our model only has a
+single angle parameter, $\theta_0^i$. Thus, we define the other angles based off
+of it as such:
+
+\begin{align}
+	\theta_n^i=\theta_i+2\pi\frac{n}{N}
+\end{align}
+
+Now, we'll transform our differential equations. First, we must convert our
+Euler-Lagrange equations into a finite difference approximation. The angular
+equation used a forwards difference approximation of $\dot{\theta}$.
 
 \begin{gather}
-	\theta_{i+1}=\frac{(2\beta-\Delta t \alpha)\theta_i +(\Delta \alpha - \beta)\theta_{i-1}-g\gamma\Delta t ^2}{\beta}\\
+	\theta_0^{i+1}=\frac{(2\beta-\Delta t \alpha)\theta_0^i +(\Delta \alpha
+		- \beta)\theta_0^{i-1}-g\gamma\Delta t ^2}{\beta}\\
 	\mathrm{where}\ 
-	\Delta t \alpha = \sum_{n=0}^{N-1}2r_n^i(r_n^i-r_n^{i-1});\ \beta=\sum_{n=0}^{N-1}(r_n^i)^2\\
-	\gamma=\sum_{n=0}^{N-1}r_n^i\cos(\theta_i+2\pi\frac{n}{N})
+	\alpha = \frac{1}{\Delta t} \sum_{n=0}^{N-1}2r_n^i(r_n^i-r_n^{i-1});\ \beta=\sum_{n=0}^{N-1}(r_n^i)^2\\
+	\gamma=\sum_{n=0}^{N-1}r_n^i\cos(\theta_n^i)
 \end{gather}
 
-The r equations were transformed using the central difference approximation of $\ddot{r_i}$,
-and the backward difference approximation of $\dot{\theta_0}$.  These choices seem arbitrary, but allow
-the $r_{n}$ term to be more easily solved for.
+The r equations were transformed using the central difference approximation of
+$\ddot{r_i}$, and the backward difference approximation of $\dot{\theta_0}$.
+These choices seem arbitrary, but allow the $r_{n}$ term to be more easily
+solved for.
 
 \begin{gather}
-	r_{n+1}=2r_n-r_{n-1}+(\theta_i-\theta_{i-1})^2r_n+\left(\omega^2(\ell_0-R_n)-g\sin(\theta_n^i)\right)\Delta t^2\\
-	\mathrm{where}\ \theta_n^i=\theta_i+2\pi\frac{n}{N}\\
+	r_n^{i+1}=2r_n^i-r_n^{i-1}+(\theta_i-\theta_{i-1})^2r_n^i+\left(\omega^2(\ell_0-r_n^i)-g\sin(\theta_n^i)\right)\Delta t^2\\
+	\mathrm{where}\ \\
 	\omega=\sqrt\frac{k}{m}
 \end{gather}
 
-These equations are obviously unpleasant, but many of the sums can be computed in the same
-for loop when implemented in code.
+These equations are large and unpleasant, but many of the sums can be computed
+in the same for-loop when implemented in code.
 
+To approximate this system, I implemented the algorithms above in the Crystal
+programming language.  I then wrote a visualizer which renders the simulation.
+An image is shown below, but more media can be found in the project's GitHub
+repository.
+\begin{center}
+	\includegraphics[width=10cm]{sim}
+\end{center}
+
+\subsection{Results}
+
+The numerical model is very interesting to play around with, and shows us
+the behavior of the system under various conditions. We analyze the system
+by plotting the phase-space behavior (namely, angular velocity on the x axis
+and angular momentum on the y axis).
+
+\begin{center}
+	\includegraphics[width=10cm]{free_rotation}
+\end{center}
+
+Shown immediately above is an $N=5$ system released from random initial
+conditions. We see that the angular momentum has a nonlinear increase as a
+function of angular velocity. We also see the presence of loops in the diagram -
+these represent oscillations, where gravity first causes angular velocity to
+increase, then rapidly decrease (much like in a planar pendulum).
+
+To truly check if our system has the superlinear response we were hoping for,
+we'll need to simulate the use of a motor. This can be done by forcing
+the angular velocity to be some predefined function. Any function could be used as a
+probe, but we'll simply use $\dot \theta(t)=t$.
+
+\begin{center}
+	\includegraphics[width=10cm]{quadratic_rotation}
+\end{center}
+
+This data is quite noisy as a result of spring oscillations, but it is clearly
+growing much faster than linearly! Using numerical methods, we have confirmed that
+this system will behave in the desired fashion.
+
+\section{Conclusion}
+Although we have shown that a small change in motor speed can lead to massive
+increases in angular momentum, it is still unclear exactly what function governs
+this relation. Additionally, the involvement of springs has many of its own
+challenges. For example, the system's rotation behaves chaotically when not being actively
+driven.
+
+Regardless, the benefits of such a system may outweigh these downsides when
+appropriate mitigation strategies are employed.
 
 \end{document}

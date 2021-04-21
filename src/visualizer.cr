@@ -13,6 +13,12 @@ class Visualizer
   end
 
   def run
+    run do
+      false
+    end
+  end
+
+  def run(&logger : Simulator -> Bool)
     window = RenderWindow.new(
       VideoMode.new(800, 600), "Reaction Wheel Simulation",
       settings: ContextSettings.new(depth: 24, antialiasing: 8)
@@ -36,6 +42,9 @@ class Visualizer
       draw(window)
 
       @simulator.step
+      if yield @simulator
+        window.close
+      end
 
       window.display
     end
@@ -48,7 +57,7 @@ class Visualizer
     state.lengths.each_with_index do |length, idx|
       rod_angle_rad = state.angle + idx.to_f64 / @simulator.count * 2 * Math::PI
       rod_angle = - 180 / Math::PI * rod_angle_rad
-      screen_length = length / 8
+      screen_length = length / @simulator.rest_length * 120
       rod = RectangleShape.new(vector2(screen_length.to_i32, 10))
       rod.fill_color = @rod_color
       rod.origin = vector2(0, 5)
