@@ -1,6 +1,10 @@
-# reactionwheel
+# Superlinear Angular Momentum in Reaction Wheels
 
-TODO: Write a description here
+![The simulator in action](demonstration.gif)
+
+This is my final project for PHYS 350 at UBC, wherein I develop several mathematical
+models of expanding reaciton wheels. It is written in the context of robot control systems,
+however the primary focus is on the lagrangian formalism used to describe such a system.
 
 ## Installation
 
@@ -8,20 +12,8 @@ TODO: Write installation instructions here
 
 ## Usage
 
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
-
-## Contributing
-
-1. Fork it (<https://github.com/your-github-user/reactionwheel/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
-## Contributors
-
-- [Seth Hinz](https://github.com/your-github-user) - creator and maintainer
+To run the simulation, you must first install SFML, the Crystal compiler, and
+`shards` (the Crystal) package manager. In the project directory, run `shards
+install` to install dependencies, then run `crystal run src/reaction-wheel.cr`
+to launch the visualizer. Graphing is done with `Ishi`, which requires `gnuplot`
+to be installed on your system.

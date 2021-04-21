@@ -3,7 +3,8 @@ require "ishi/png"
 require "./simulator"
 require "./visualizer"
 
-simulator = Simulator.new(count: 5, mass: 0.01, natural_length: 0.3, spring_constant: 20, timestep: 0.002f64)
+# simulator = Simulator.new(count: 5, mass: 0.01, natural_length: 0.3, spring_constant: 20, timestep: 0.002f64)
+simulator = Simulator.new(count: 5, mass: 1, natural_length: 500, spring_constant: 20, timestep: 0.005f64)
 
 lengths = Array(Float64).new
 
@@ -12,7 +13,7 @@ simulator.count.times do |idx|
 end
 
 simulator.log[1] = State.new(lengths, 0f64)
-simulator.log[0] = State.new(lengths, simulator.timestep)
+simulator.log[0] = State.new(lengths, simulator.timestep / 2)
 
 visualizer = Visualizer.new(simulator)
 
@@ -23,6 +24,7 @@ period = 1
 stop = 15000
 
 begin
+  visualizer.run
   visualizer.run do |sim|
     # Force our angle function
     if counter < stop / 2
