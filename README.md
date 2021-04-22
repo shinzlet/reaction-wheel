@@ -9,7 +9,7 @@ however the primary focus is on the lagrangian formalism used to describe such a
 ## Usage
 
 To run the simulation, you must first install SFML, the Crystal compiler, and
-`shards` (the Crystal) package manager. In the project directory, run `shards
+`shards` (the Crystal package manager). In the project directory, run `shards
 install` to install dependencies, then run `crystal run src/reaction-wheel.cr`
 to launch the visualizer. Graphing is done with `Ishi`, which requires `gnuplot`
 to be installed on your system.
